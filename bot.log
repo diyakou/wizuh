@@ -1,0 +1,8 @@
+2025-07-15 21:52:48,375 - __main__ - INFO - Initializing bot...
+2025-07-15 21:52:48,408 - database.db - INFO - Database tables created successfully
+2025-07-15 21:52:48,955 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe "HTTP/1.1 200 OK"
+2025-07-15 21:52:48,959 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-15 21:52:48,960 - apscheduler.scheduler - INFO - Scheduler started
+2025-07-15 21:52:48,961 - telegram.ext.Application - INFO - Application started
+2025-07-15 21:52:48,963 - __main__ - INFO - Shutting down application...
+2025-07-15 21:52:48,966 - telegram.ext.Application - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
