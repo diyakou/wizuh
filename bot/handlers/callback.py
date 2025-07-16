@@ -56,6 +56,16 @@ def handle_admin_callback(bot, query) -> None:
     """Handle admin-specific callbacks."""
     callback_data = query.data
     
+    if callback_data == "back_to_admin":
+        bot.edit_message_text(
+            "🔰 به پنل مدیریت خوش آمدید.\n"
+            "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
+            reply_markup=get_admin_main_menu()
+        )
+        return
+
     # Handle server management
     if callback_data == "admin_servers" or callback_data in [
         'server_add', 'server_list', 'server_status', 'server_test', 'back_to_server_menu', 'cancel_server_add'

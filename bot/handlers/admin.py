@@ -60,129 +60,61 @@ def handle_admin_message(bot, message):
     """Handle admin panel messages."""
     text = message.text
     user = message.from_user
-    
+
     # Check if user is admin
     admin = User.get_by_telegram_id(user.id)
     if not admin or not admin.is_admin:
         return
-    
-    if text == "🛠 تنظیمات درگاه‌های پرداخت":
-        keyboard = [
-            [InlineKeyboardButton("💳 درگاه‌های فعال", callback_data="gateways_active")],
-            [InlineKeyboardButton("➕ افزودن درگاه جدید", callback_data="gateway_add")],
-            [InlineKeyboardButton("✏️ ویرایش درگاه", callback_data="gateway_edit")],
-            [InlineKeyboardButton("❌ حذف درگاه", callback_data="gateway_delete")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-        ]
-        
-        bot.send_message(
-            message.chat.id,
-            "🛠 مدیریت درگاه‌های پرداخت\n"
-            "لطفاً یک گزینه را انتخاب کنید:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        
-    elif text == "📢 تنظیمات کانال":
-        keyboard = [
-            [InlineKeyboardButton("📢 کانال‌های فعال", callback_data="channels_active")],
-            [InlineKeyboardButton("➕ افزودن کانال جدید", callback_data="channel_add")],
-            [InlineKeyboardButton("✏️ ویرایش کانال", callback_data="channel_edit")],
-            [InlineKeyboardButton("❌ حذف کانال", callback_data="channel_delete")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-        ]
-        
-        bot.send_message(
-            message.chat.id,
-            "📢 مدیریت کانال‌ها\n"
-            "لطفاً یک گزینه را انتخاب کنید:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        
-    elif text == "📁 مدیریت دسته‌بندی‌ها":
-        keyboard = [
-            [InlineKeyboardButton("📁 دسته‌بندی‌های موجود", callback_data="categories_list")],
-            [InlineKeyboardButton("➕ افزودن دسته‌بندی", callback_data="category_add")],
-            [InlineKeyboardButton("✏️ ویرایش دسته‌بندی", callback_data="category_edit")],
-            [InlineKeyboardButton("❌ حذف دسته‌بندی", callback_data="category_delete")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-        ]
-        
-        bot.send_message(
-            message.chat.id,
-            "📁 مدیریت دسته‌بندی‌ها\n"
-            "لطفاً یک گزینه را انتخاب کنید:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        
-    elif text == "💰 مدیریت پلن‌ها":
-        keyboard = [
-            [InlineKeyboardButton("💰 پلن‌های موجود", callback_data="plans_list")],
-            [InlineKeyboardButton("➕ افزودن پلن", callback_data="plan_add")],
-            [InlineKeyboardButton("✏️ ویرایش پلن", callback_data="plan_edit")],
-            [InlineKeyboardButton("❌ حذف پلن", callback_data="plan_delete")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-        ]
-        
-        bot.send_message(
-            message.chat.id,
-            "💰 مدیریت پلن‌ها\n"
-            "لطفاً یک گزینه را انتخاب کنید:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        
-    elif text == "🖥 مدیریت سرورها":
-        keyboard = [
-            [InlineKeyboardButton("🖥 سرورهای موجود", callback_data="servers_list")],
-            [InlineKeyboardButton("➕ افزودن سرور", callback_data="server_add")],
-            [InlineKeyboardButton("✏️ ویرایش سرور", callback_data="server_edit")],
-            [InlineKeyboardButton("❌ حذف سرور", callback_data="server_delete")],
-            [InlineKeyboardButton("📊 وضعیت سرورها", callback_data="server_status")],
-            [InlineKeyboardButton("🔄 همگام‌سازی", callback_data="server_sync")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-        ]
-        
-        bot.send_message(
-            message.chat.id,
-            "🖥 مدیریت سرورها\n"
-            "لطفاً یک گزینه را انتخاب کنید:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        
-    elif text == "📊 گزارش‌ها":
-        admin_reports(bot, message)
-        
-    elif text == "📨 ارسال پیام همگانی":
-        admin_broadcast(bot, message)
-        
-    elif text == "💾 پشتیبان‌گیری":
-        admin_backup(bot, message)
-        
-    elif text == "👥 مدیریت کاربران":
-        admin_users(bot, message)
-        
+
+    # Map commands to functions
+    command_handlers = {
+        "🛠 تنظیمات درگاه‌های پرداخت": handle_gateway_management,
+        "📁 مدیریت دسته‌بندی‌ها": handle_category_management,
+        "💰 مدیریت پلن‌ها": handle_plan_management,
+        "🖥 مدیریت سرورها": handle_server_management,
+        "👥 مدیریت کاربران": handle_user_management,
+        "📊 گزارش‌ها": admin_reports,
+        "📨 ارسال پیام همگانی": admin_broadcast,
+        "💾 پشتیبان‌گیری": admin_backup,
+    }
+
+    handler = command_handlers.get(text)
+    if handler:
+        handler(bot, message)
     elif text == "🔙 بازگشت به منوی اصلی":
-        # Return to main menu
-        keyboard = [
-            [KeyboardButton("🛍 خرید اشتراک"), KeyboardButton("👤 حساب کاربری")],
-            [KeyboardButton("📱 پیکربندی‌های من"), KeyboardButton("💰 شارژ کیف پول")],
-            [KeyboardButton("📞 پشتیبانی"), KeyboardButton("ℹ️ راهنما")]
-        ]
-        
-        if admin and admin.is_admin:
-            keyboard.insert(0, [KeyboardButton("🎛 پنل مدیریت")])
-        
-        reply_markup = ReplyKeyboardMarkup(
-            keyboard,
-            resize_keyboard=True,
-            one_time_keyboard=False
-        )
-        
+        from bot.handlers.user import get_main_keyboard
         bot.send_message(
             message.chat.id,
             "🏠 به منوی اصلی بازگشتید.\n"
             "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
-            reply_markup=reply_markup
+            reply_markup=get_main_keyboard()
         )
+    else:
+        state = user_states.get(message.chat.id)
+        if state == 'WAITING_GATEWAY_INFO':
+            handle_gateway_info(bot, message)
+        elif state == 'WAITING_CATEGORY_INFO':
+            handle_category_info(bot, message)
+        elif state == 'WAITING_SERVER_INFO':
+            handle_server_info(bot, message)
+        elif state == 'WAITING_PLAN_NAME':
+            handle_plan_name(bot, message)
+        elif state == 'WAITING_PLAN_PRICE':
+            handle_plan_price(bot, message)
+        elif state == 'WAITING_PLAN_DURATION':
+            handle_plan_duration(bot, message)
+        elif state == 'WAITING_PLAN_DESCRIPTION':
+            handle_plan_description(bot, message)
+        elif state == 'WAITING_USER_TO_BLOCK':
+            handle_block_user_input(bot, message)
+        elif state == 'WAITING_USER_TO_UNBLOCK':
+            handle_unblock_user_input(bot, message)
+        elif state == 'WAITING_XUI_SERVER_NAME':
+            handle_xui_server_name(bot, message)
+        elif state == 'WAITING_XUI_SERVER_URL':
+            handle_xui_server_url(bot, message)
+        elif state == 'WAITING_XUI_SERVER_CREDENTIALS':
+            handle_xui_server_credentials(bot, message)
 
 def admin_reports(bot, message):
     """Handle admin reports."""
@@ -449,11 +381,17 @@ def handle_gateway_info(bot, message):
             "درگاه پرداخت با موفقیت اضافه شد.",
             reply_markup=get_admin_main_menu()
         )
+    except ValueError:
+        bot.send_message(
+            message.chat.id,
+            "فرمت ورودی اشتباه است. لطفاً اطلاعات را در قالب NAME|API_KEY|TYPE وارد کنید.",
+            reply_markup=get_admin_main_menu()
+        )
     except Exception as e:
         logger.error(f"Error adding gateway: {e}")
         bot.send_message(
             message.chat.id,
-            "خطا در افزودن درگاه پرداخت. لطفاً مجدداً تلاش کنید.",
+            f"خطا در افزودن درگاه پرداخت: {e}",
             reply_markup=get_admin_main_menu()
         )
     user_states.pop(message.chat.id, None)
@@ -497,11 +435,17 @@ def handle_category_info(bot, message):
             "دسته‌بندی با موفقیت اضافه شد.",
             reply_markup=get_admin_main_menu()
         )
+    except ValueError:
+        bot.send_message(
+            message.chat.id,
+            "فرمت ورودی اشتباه است. لطفاً اطلاعات را در قالب NAME|DESCRIPTION وارد کنید.",
+            reply_markup=get_admin_main_menu()
+        )
     except Exception as e:
         logger.error(f"Error adding category: {e}")
         bot.send_message(
             message.chat.id,
-            "خطا در افزودن دسته‌بندی. لطفاً مجدداً تلاش کنید.",
+            f"خطا در افزودن دسته‌بندی: {e}",
             reply_markup=get_admin_main_menu()
         )
     user_states.pop(message.chat.id, None)
@@ -568,7 +512,7 @@ def handle_plan_description(bot, message):
         logger.error(f"Error adding plan: {e}")
         bot.send_message(
             message.chat.id,
-            "خطا در افزودن پلن. لطفاً مجدداً تلاش کنید.",
+            f"خطا در افزودن پلن: {e}",
             reply_markup=get_admin_main_menu()
         )
     user_states.pop(message.chat.id, None)
@@ -579,8 +523,13 @@ from bot.handlers.server_management import (
     cancel_server_add,
 )
 def handle_server_management(bot, message):
-    """Delegates server management to the server_management handler."""
-    start_server_add(bot, message)
+    """Shows the server management menu."""
+    bot.send_message(
+        message.chat.id,
+        "🖥 مدیریت سرورها\n"
+        "لطفاً یک گزینه را انتخاب کنید:",
+        reply_markup=get_server_management_menu()
+    )
 
 def handle_user_management(bot, message):
     keyboard = [
@@ -600,26 +549,13 @@ def handle_user_management(bot, message):
 
 def start_block_user(bot, message):
     user_states[message.chat.id] = 'WAITING_USER_TO_BLOCK'
-    users = session.query(User).filter(User.is_banned == False).all()
-    keyboard = []
-    for user in users:
-        username_value = session.query(User.username).filter(User.telegram_id == user.telegram_id).scalar()
-        username = str(username_value) if username_value is not None else f"ID: {user.telegram_id}"
-        first_name = session.query(User.first_name).filter(User.telegram_id == user.telegram_id).scalar() or ''
-        last_name = session.query(User.last_name).filter(User.telegram_id == user.telegram_id).scalar() or ''
-        button = InlineKeyboardButton(
-            f"{username} - {first_name} {last_name}".strip(),
-            callback_data=f"block_user_{user.telegram_id}"
-        )
-        keyboard.append([button])
-    keyboard.append([InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_user_management")])
     bot.send_message(
         message.chat.id,
-        "لطفاً کاربر مورد نظر را برای مسدود کردن انتخاب کنید یا ID تلگرام کاربر را وارد کنید:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        "لطفاً ID تلگرام کاربری که می‌خواهید مسدود کنید را وارد کنید:",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_user_management")]])
     )
 
-def handle_block_user_input(bot, message):
+def handle_user_block_status_input(bot, message, block=True):
     try:
         user_id = int(message.text)
         user = User.get_by_telegram_id(user_id)
@@ -627,15 +563,20 @@ def handle_block_user_input(bot, message):
             bot.send_message(message.chat.id, "کاربر با این ID یافت نشد. لطفاً دوباره امتحان کنید.")
             return
 
-        if session.query(User.is_banned).filter(User.telegram_id == user_id).scalar():
+        if block and user.is_banned:
             bot.send_message(message.chat.id, "این کاربر قبلاً مسدود شده است.")
             return
 
-        user_states[message.chat.id] = {'state': 'CONFIRM_USER_BLOCK', 'user_id': user_id}
+        if not block and not user.is_banned:
+            bot.send_message(message.chat.id, "این کاربر مسدود نیست.")
+            return
+
+        action = "مسدود" if block else "آزاد"
+        user_states[message.chat.id] = {'state': f'CONFIRM_USER_{"BLOCK" if block else "UNBLOCK"}', 'user_id': user_id}
         keyboard = [
             [
-                InlineKeyboardButton("✅ تأیید", callback_data="confirm_block"),
-                InlineKeyboardButton("❌ لغو", callback_data="cancel_block")
+                InlineKeyboardButton("✅ تأیید", callback_data=f"confirm_{'block' if block else 'unblock'}"),
+                InlineKeyboardButton("❌ لغو", callback_data="cancel_block_unblock")
             ]
         ]
         bot.send_message(
@@ -644,76 +585,71 @@ def handle_block_user_input(bot, message):
             f"ID تلگرام: {user.telegram_id}\n"
             f"نام: {str(user.username or 'تنظیم نشده')}\n"
             f"نام کامل: {str(user.first_name or '')} {str(user.last_name or '')}\n"
-            f"وضعیت: {'مسدود' if session.query(User.is_banned).filter(User.telegram_id == user_id).scalar() else 'فعال'}\n\n"
-            f"آیا می‌خواهید این کاربر را مسدود کنید؟",
+            f"وضعیت: {'مسدود' if user.is_banned else 'فعال'}\n\n"
+            f"آیا می‌خواهید این کاربر را {action} کنید؟",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     except ValueError:
         bot.send_message(message.chat.id, "لطفاً یک ID معتبر وارد کنید.")
 
-def confirm_block_user(bot, message):
+def handle_block_user_input(bot, message):
+    handle_user_block_status_input(bot, message, block=True)
+
+def handle_unblock_user_input(bot, message):
+    handle_user_block_status_input(bot, message, block=False)
+
+def confirm_user_block_status(bot, message, block=True):
+    state_str = "BLOCK" if block else "UNBLOCK"
     data = user_states.get(message.chat.id)
-    if not data or data.get('state') != 'CONFIRM_USER_BLOCK':
+    if not data or data.get('state') != f'CONFIRM_USER_{state_str}':
         return
 
     user_id = data.get('user_id')
+    action_gerund = "مسدود کردن" if block else "آزاد کردن"
+    action_past = "مسدود" if block else "آزاد"
+    notification_message = "دسترسی شما به ربات به دلیل نقض قوانین مسدود شد. برای اطلاعات بیشتر با پشتیبانی تماس بگیرید." if block else "دسترسی شما به ربات دوباره فعال شد. اکنون می‌توانید از خدمات استفاده کنید."
+
     try:
-        session.query(User).filter(User.telegram_id == user_id).update(
-            {
-                User.is_banned: True,
-                User.banned_at: datetime.utcnow()
-            }
-        )
+        update_values = {User.is_banned: block}
+        if block:
+            update_values[User.banned_at] = datetime.utcnow()
+        else:
+            update_values[User.unbanned_at] = datetime.utcnow()
+
+        session.query(User).filter(User.telegram_id == user_id).update(update_values)
         session.commit()
+
         try:
-            bot.send_message(
-                user_id,
-                "دسترسی شما به ربات به دلیل نقض قوانین مسدود شد. برای اطلاعات بیشتر با پشتیبانی تماس بگیرید."
-            )
+            bot.send_message(user_id, notification_message)
         except Exception as e:
-            logger.error(f"Failed to notify user {user_id} about ban: {e}")
+            logger.error(f"Failed to notify user {user_id} about {'ban' if block else 'unban'}: {e}")
+
         bot.send_message(
             message.chat.id,
-            f"کاربر با ID {user_id} با موفقیت مسدود شد!",
+            f"کاربر با ID {user_id} با موفقیت {action_past} شد!",
             reply_markup=get_user_management_menu()
         )
     except Exception as e:
-        logger.error(f"Error blocking user {user_id}: {e}")
+        logger.error(f"Error {action_gerund} user {user_id}: {e}")
         bot.send_message(
             message.chat.id,
-            "خطا در مسدود کردن کاربر. لطفاً دوباره تلاش کنید.",
+            f"خطا در {action_gerund} کاربر. لطفاً دوباره تلاش کنید.",
             reply_markup=get_user_management_menu()
         )
     user_states.pop(message.chat.id, None)
 
+def confirm_block_user(bot, message):
+    confirm_user_block_status(bot, message, block=True)
+
+def confirm_unblock_user(bot, message):
+    confirm_user_block_status(bot, message, block=False)
+
 def start_unblock_user(bot, message):
     user_states[message.chat.id] = 'WAITING_USER_TO_UNBLOCK'
-    users = session.query(User).filter(User.is_banned == True).all()
-    keyboard = []
-    for user in users:
-        username_value = session.query(User.username).filter(User.telegram_id == user.telegram_id).scalar()
-        username = str(username_value) if username_value is not None else f"ID: {user.telegram_id}"
-        first_name = session.query(User.first_name).filter(User.telegram_id == user.telegram_id).scalar() or ''
-        last_name = session.query(User.last_name).filter(User.telegram_id == user.telegram_id).scalar() or ''
-        button = InlineKeyboardButton(
-            f"{username} - {first_name} {last_name}".strip(),
-            callback_data=f"unblock_user_{user.telegram_id}"
-        )
-        keyboard.append([button])
-    if not users:
-        keyboard = [[InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_user_management")]]
-        bot.send_message(
-            message.chat.id,
-            "هیچ کاربر مسدودی وجود ندارد.",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        user_states.pop(message.chat.id, None)
-        return
-    keyboard.append([InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_user_management")])
     bot.send_message(
         message.chat.id,
-        "لطفاً کاربر مورد نظر را برای آزاد کردن انتخاب کنید یا ID تلگرام کاربر را وارد کنید:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        "لطفاً ID تلگرام کاربری که می‌خواهید آزاد کنید را وارد کنید:",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_user_management")]])
     )
 
 def handle_unblock_user_input(bot, message):

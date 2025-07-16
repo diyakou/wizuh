@@ -320,14 +320,7 @@ def handle_server_callback(bot, call):
         start_server_add(bot, call.message)
     
     elif data == 'cancel_server_add':
-        user_id = call.from_user.id
-        if user_id in user_states:
-            user_states.pop(user_id, None)
-            bot.edit_message_text(
-                "❌ فرآیند افزودن سرور لغو شد.",
-                chat_id,
-                message_id
-            )
+        cancel_server_add(bot, call)
     
     elif data == 'server_list':
         show_server_list(bot, chat_id, message_id)
