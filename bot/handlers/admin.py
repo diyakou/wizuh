@@ -2,7 +2,7 @@ from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeybo
 from database.models import User, Config, Plan, Transaction, Server, UserRole, Setting, SettingType, ServerCategory, ServerPlan, XUIServer, XUIConfig, ServerProtocol
 from database.db import session
 from config.settings import ADMIN_IDS
-from api.xui import XUIClient
+from api.xui_client import XUIClient
 import logging
 import json
 from datetime import datetime, timedelta
