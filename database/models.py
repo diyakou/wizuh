@@ -55,10 +55,10 @@ class User(Base):
     is_banned = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime)
-    
+
     configs = relationship("XUIConfig", back_populates="user")
     transactions = relationship("Transaction", back_populates="user")
-    
+
     @classmethod
     def get_by_telegram_id(cls, telegram_id: int):
         return session.query(cls).filter_by(telegram_id=telegram_id).first()
@@ -66,6 +66,11 @@ class User(Base):
     @classmethod
     def count_new_users(cls, since: datetime):
         return session.query(cls).filter(cls.created_at >= since).count()
+
+    @property
+    def is_admin(self) -> bool:
+        return self.role == UserRole.ADMIN
+
 
 class Server(Base):
     __tablename__ = 'servers'
@@ -435,7 +440,8 @@ class XUIConfig(Base):
     expiry_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[Optional[datetime]] = mapped_column(DateTime, onupdate=func.now())
-    
+    plan_id: Mapped[int] = mapped_column(Integer, ForeignKey('server_plans.id'))
+    plan: Mapped["ServerPlan"] = relationship("ServerPlan", back_populates="configs")
     user: Mapped[ForwardRef("User")] = relationship("User", back_populates="configs") # type: ignore
     server: Mapped[XUIServer] = relationship("XUIServer", back_populates="configs")
     

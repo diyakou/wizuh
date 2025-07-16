@@ -307,38 +307,48 @@ user_states = {}
 def is_admin(user_id: int) -> bool:
     """Check if user is an admin."""
     return user_id in ADMIN_IDS
+def get_admin_keyboard():
+    """کیبورد منوی مدیریت ادمین"""
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.row(
+        KeyboardButton("🛠 تنظیمات درگاه‌های پرداخت"),
+        KeyboardButton("📢 تنظیمات کانال")
+    )
+    markup.row(
+        KeyboardButton("📁 مدیریت دسته‌بندی‌ها"),
+        KeyboardButton("💰 مدیریت پلن‌ها")
+    )
+    markup.row(
+        KeyboardButton("🖥 مدیریت سرورها"),
+        KeyboardButton("📊 گزارش‌ها")
+    )
+    markup.row(
+        KeyboardButton("📨 ارسال پیام همگانی"),
+        KeyboardButton("💾 پشتیبان‌گیری")
+    )
+    markup.row(
+        KeyboardButton("👥 مدیریت کاربران"),
+        KeyboardButton("🔙 بازگشت به منوی اصلی")
+    )
+    return markup
 
 def admin_panel(bot, message):
-    """Show admin panel with keyboard buttons."""
+    """نمایش منوی پنل ادمین"""
     user = message.from_user
-    
-    # Check if user is admin
+
+    # بررسی ادمین بودن
     admin = User.get_by_telegram_id(user.id)
     if not admin or not admin.is_admin:
         bot.send_message(message.chat.id, "⛔️ شما دسترسی به پنل ادمین را ندارید.")
         return
-    
-    # Create keyboard with admin options
-    keyboard = [
-        [KeyboardButton("🛠 تنظیمات درگاه‌های پرداخت"), KeyboardButton("📢 تنظیمات کانال")],
-        [KeyboardButton("📁 مدیریت دسته‌بندی‌ها"), KeyboardButton("💰 مدیریت پلن‌ها")],
-        [KeyboardButton("🖥 مدیریت سرورها"), KeyboardButton("📊 گزارش‌ها")],
-        [KeyboardButton("📨 ارسال پیام همگانی"), KeyboardButton("💾 پشتیبان‌گیری")],
-        [KeyboardButton("👥 مدیریت کاربران"), KeyboardButton("🔙 بازگشت به منوی اصلی")]
-    ]
-    
-    reply_markup = ReplyKeyboardMarkup(
-        keyboard,
-        resize_keyboard=True,
-        one_time_keyboard=False
-    )
-    
+
+    # ارسال منوی مدیریت
     bot.send_message(
         message.chat.id,
-        "🔰 به پنل مدیریت خوش آمدید.\n"
-        "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
-        reply_markup=reply_markup
+        "🔰 به پنل مدیریت خوش آمدید.\nلطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
+        reply_markup=get_admin_keyboard()
     )
+
 
 def handle_admin_message(bot, message):
     """Handle admin panel messages."""

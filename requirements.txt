@@ -1,4 +1,4 @@
-py-telegram-bot-api
+pyTelegramBotAPI
 SQLAlchemy==2.0.23
 alembic==1.12.1
 requests==2.31.0
@@ -19,3 +19,4 @@ redis==5.0.1
 aioredis==2.0.1
 schedule==1.2.1
 APScheduler==3.10.4 
+pymysql

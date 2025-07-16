@@ -1,35 +1,52 @@
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
-from database.models import User, Config, Plan, Transaction
+from database.models import User, Config, Plan, Transaction, UserRole
 from database.db import session
-from config.settings import CHANNEL_ID, CHANNEL_LOCK_ENABLED
+from config.settings import ADMIN_IDS, CHANNEL_ID, CHANNEL_LOCK_ENABLED
 import logging
 
 logger = logging.getLogger(__name__)
 
 def get_main_keyboard():
-    """Get the main menu keyboard."""
-    keyboard = [
-        [KeyboardButton("🛒 خرید اشتراک"), KeyboardButton("📱 کانفیگ های من")],
-        [KeyboardButton("💰 کیف پول"), KeyboardButton("❓ راهنما")],
-        [KeyboardButton("👤 پروفایل")]
-    ]
-    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    """کیبورد منوی اصلی ربات"""
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.row(
+        KeyboardButton("🛒 خرید اشتراک"),
+        KeyboardButton("📱 کانفیگ های من")
+    )
+    markup.row(
+        KeyboardButton("💰 کیف پول"),
+        KeyboardButton("❓ راهنما")
+    )
+    markup.row(
+        KeyboardButton("👤 پروفایل")
+    )
+    return markup
+
 
 def get_wallet_keyboard():
-    """Get the wallet menu keyboard."""
-    keyboard = [
-        [KeyboardButton("💳 افزایش موجودی"), KeyboardButton("📊 تراکنش ها")],
-        [KeyboardButton("🔙 بازگشت به منوی اصلی")]
-    ]
-    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    """کیبورد منوی کیف پول"""
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.row(
+        KeyboardButton("💳 افزایش موجودی"),
+        KeyboardButton("📊 تراکنش ها")
+    )
+    markup.row(
+        KeyboardButton("🔙 بازگشت به منوی اصلی")
+    )
+    return markup
+
 
 def get_profile_keyboard():
-    """Get the profile menu keyboard."""
-    keyboard = [
-        [KeyboardButton("📝 ویرایش نام"), KeyboardButton("📞 ویرایش شماره")],
-        [KeyboardButton("🔙 بازگشت به منوی اصلی")]
-    ]
-    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    """کیبورد منوی پروفایل"""
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.row(
+        KeyboardButton("📝 ویرایش نام"),
+        KeyboardButton("📞 ویرایش شماره")
+    )
+    markup.row(
+        KeyboardButton("🔙 بازگشت به منوی اصلی")
+    )
+    return markup
 
 def check_channel_membership(bot, user_id: int) -> bool:
     """Check if user is member of the required channel."""
@@ -65,7 +82,7 @@ def start_handler(bot, message):
                 reply_markup=reply_markup
             )
             return
-        
+
         # Get or create user in database
         logger.info("Querying database for user...")
         db_user = session.query(User).filter_by(telegram_id=user.id).first()
@@ -77,9 +94,19 @@ def start_handler(bot, message):
                 first_name=user.first_name,
                 last_name=user.last_name
             )
+            # ⬇️ اگر آیدی در لیست ادمین‌ها بود، نقش را admin قرار بده
+            if user.id in ADMIN_IDS:
+                db_user.role = UserRole.ADMIN
+
             session.add(db_user)
             session.commit()
-        
+
+        else:
+            # ⬇️ اگر از قبل وجود داشت ولی هنوز admin نیست، بررسی کن
+            if user.id in ADMIN_IDS and db_user.role != UserRole.ADMIN:
+                db_user.role = UserRole.ADMIN
+                session.commit()
+
         # Send welcome message with main menu keyboard
         logger.info("Sending welcome message...")
         bot.send_message(
@@ -89,7 +116,7 @@ def start_handler(bot, message):
             "لطفاً از منوی زیر گزینه مورد نظر خود را انتخاب کنید:",
             reply_markup=get_main_keyboard()
         )
-        
+
     except Exception as e:
         logger.error(f"Error in start_handler: {e}", exc_info=True)
         bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")

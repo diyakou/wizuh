@@ -6,3 +6,1057 @@
 2025-07-15 21:52:48,961 - telegram.ext.Application - INFO - Application started
 2025-07-15 21:52:48,963 - __main__ - INFO - Shutting down application...
 2025-07-15 21:52:48,966 - telegram.ext.Application - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
+2025-07-16 10:15:43,265 - database.db - ERROR - Error creating database tables: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-07-16 10:16:50,976 - database.db - INFO - Database tables created successfully
+2025-07-16 10:16:50,978 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:17:00,456 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:17:00,458 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:17:00,459 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:17:00,459 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:17:00,909 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:17:00,919 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:17:00,932 - bot.handlers.user - ERROR - Error in start_handler: reverse_property 'configs' on relationship Config.user references relationship User.configs, which does not reference mapper Mapper[Config(configs)]
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 71, in start_handler
+    db_user = session.query(User).filter_by(telegram_id=user.id).first()
+              ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\scoping.py", line 1697, in query
+    return self._proxied.query(*entities, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+                        ^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4240, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2403, in _post_configure_properties
+    prop.init()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\interfaces.py", line 579, in init
+    self.do_init()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1640, in do_init
+    self._generate_backref()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2129, in _generate_backref
+    self._add_reverse_property(self.back_populates)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1595, in _add_reverse_property
+    raise sa_exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: reverse_property 'configs' on relationship Config.user references relationship User.configs, which does not reference mapper Mapper[Config(configs)]
+2025-07-16 10:17:09,458 - __main__ - INFO - Bot stopped.
+2025-07-16 10:19:18,162 - database.db - INFO - Database tables created successfully
+2025-07-16 10:19:18,162 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:19:23,190 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:992)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1195, in polling
+    logger.info('Starting your bot with username: [@%s]', self.user.username)
+                                                          ^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 306, in user
+    self._user = self.get_me()
+                 ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1382, in get_me
+    apihelper.get_me(self.token)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 202, in get_me
+    return _make_request(token, method_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 517, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+2025-07-16 10:19:23,197 - __main__ - INFO - Bot stopped.
+2025-07-16 10:19:41,069 - database.db - INFO - Database tables created successfully
+2025-07-16 10:19:41,069 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:19:42,009 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:19:42,009 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:19:42,011 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:19:42,011 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:19:42,433 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:19:42,433 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:19:42,446 - bot.handlers.user - ERROR - Error in start_handler: Could not determine join condition between parent/child tables on relationship ServerPlan.configs - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2419, in _determine_joins
+    self.primaryjoin = join_condition(
+                       ^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\sql\selectable.py", line 1358, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'server_plans' and 'xui_configs'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 71, in start_handler
+    db_user = session.query(User).filter_by(telegram_id=user.id).first()
+              ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\scoping.py", line 1697, in query
+    return self._proxied.query(*entities, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+                        ^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4240, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2403, in _post_configure_properties
+    prop.init()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\interfaces.py", line 579, in init
+    self.do_init()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1637, in do_init
+    self._setup_join_conditions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1882, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+                                ^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2306, in __init__
+    self._determine_joins()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2440, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship ServerPlan.configs - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2025-07-16 10:19:48,038 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:19:48,039 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:19:48,039 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:19:48,040 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:19:48,530 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:19:48,530 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:19:48,530 - bot.handlers.user - ERROR - Error in start_handler: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ServerPlan(server_plans)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ServerPlan.configs - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 71, in start_handler
+    db_user = session.query(User).filter_by(telegram_id=user.id).first()
+              ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\scoping.py", line 1697, in query
+    return self._proxied.query(*entities, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+                        ^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4236, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ServerPlan(server_plans)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ServerPlan.configs - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2025-07-16 10:23:58,829 - __main__ - INFO - Bot stopped.
+2025-07-16 10:24:01,088 - database.db - INFO - Database tables created successfully
+2025-07-16 10:24:01,089 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:24:11,162 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:24:11,169 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:24:11,176 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:24:11,177 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:24:11,701 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:24:11,702 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:24:11,794 - bot.handlers.user - INFO - Creating new user in database
+2025-07-16 10:24:11,803 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:24:11,804 - bot.handlers.user - ERROR - Error in start_handler: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 90, in start_handler
+    reply_markup=get_main_keyboard()
+                 ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 16, in get_main_keyboard
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:25:17,676 - __main__ - INFO - Bot stopped.
+2025-07-16 10:25:21,686 - database.db - INFO - Database tables created successfully
+2025-07-16 10:25:21,686 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:25:23,644 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:25:23,647 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:25:23,647 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:25:23,648 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:25:24,071 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:25:24,072 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:25:24,109 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:25:24,110 - bot.handlers.user - ERROR - Error in start_handler: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 90, in start_handler
+    reply_markup=get_main_keyboard()
+                 ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 16, in get_main_keyboard
+    return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:26:36,112 - __main__ - INFO - Bot stopped.
+2025-07-16 10:26:37,941 - database.db - INFO - Database tables created successfully
+2025-07-16 10:26:37,941 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:26:40,113 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:26:40,116 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:26:40,120 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:26:40,127 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:26:40,617 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:26:40,618 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:26:40,646 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:26:40,648 - bot.handlers.user - ERROR - Error in start_handler: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 90, in start_handler
+    reply_markup=get_main_keyboard()
+                 ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\handlers\user.py", line 15, in get_main_keyboard
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:28:01,312 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659832&timeout=20 (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connection.py", line 790, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connection.py", line 969, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+               ^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\ssl_.py", line 480, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\ssl_.py", line 524, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\ssl.py", line 1075, in _create
+    self.do_handshake()
+  File "C:\Program Files\Python311\Lib\ssl.py", line 1346, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: EOF occurred in violation of protocol (_ssl.c:992)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:992)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659832&timeout=20 (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 517, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659832&timeout=20 (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+2025-07-16 10:28:01,316 - __main__ - INFO - Bot stopped.
+2025-07-16 10:28:12,007 - database.db - INFO - Database tables created successfully
+2025-07-16 10:28:12,008 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:28:23,314 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connection.py", line 790, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connection.py", line 969, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+               ^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\ssl_.py", line 480, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\ssl_.py", line 524, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\ssl.py", line 1075, in _create
+    self.do_handshake()
+  File "C:\Program Files\Python311\Lib\ssl.py", line 1346, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: EOF occurred in violation of protocol (_ssl.c:992)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:992)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1195, in polling
+    logger.info('Starting your bot with username: [@%s]', self.user.username)
+                                                          ^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 306, in user
+    self._user = self.get_me()
+                 ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1382, in get_me
+    apihelper.get_me(self.token)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 202, in get_me
+    return _make_request(token, method_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 517, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+2025-07-16 10:28:23,323 - __main__ - INFO - Bot stopped.
+2025-07-16 10:28:42,497 - database.db - INFO - Database tables created successfully
+2025-07-16 10:28:42,497 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:28:53,563 - __main__ - INFO - Bot stopped.
+2025-07-16 10:28:57,383 - database.db - INFO - Database tables created successfully
+2025-07-16 10:28:57,383 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:28:58,277 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:28:58,277 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:28:58,278 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:28:58,279 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:28:58,280 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:28:58,280 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:28:58,280 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:28:58,280 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:28:58,707 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:28:58,709 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:28:58,709 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:28:58,709 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:28:58,747 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:28:58,752 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:28:58,901 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:28:58,901 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:28:58,901 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:28:58,902 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:28:58,927 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:28:58,927 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:28:58,927 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:28:58,927 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:28:59,036 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:28:59,036 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:28:59,038 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:28:59,068 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:28:59,068 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:28:59,069 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:29:10,441 - __main__ - ERROR - Fatal error: 'User' object has no attribute 'is_admin'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 317, in admin_panel
+    if not admin or not admin.is_admin:
+                        ^^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'is_admin'
+2025-07-16 10:29:10,442 - __main__ - INFO - Bot stopped.
+2025-07-16 10:31:32,082 - database.db - INFO - Database tables created successfully
+2025-07-16 10:31:32,083 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:31:37,105 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:992)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1195, in polling
+    logger.info('Starting your bot with username: [@%s]', self.user.username)
+                                                          ^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 306, in user
+    self._user = self.get_me()
+                 ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1382, in get_me
+    apihelper.get_me(self.token)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 202, in get_me
+    return _make_request(token, method_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 517, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+2025-07-16 10:31:37,120 - __main__ - INFO - Bot stopped.
+2025-07-16 10:32:12,016 - database.db - INFO - Database tables created successfully
+2025-07-16 10:32:12,017 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:32:12,180 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+urllib3.exceptions.SSLError: EOF occurred in violation of protocol (_ssl.c:992)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1195, in polling
+    logger.info('Starting your bot with username: [@%s]', self.user.username)
+                                                          ^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 306, in user
+    self._user = self.get_me()
+                 ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1382, in get_me
+    apihelper.get_me(self.token)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 202, in get_me
+    return _make_request(token, method_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 517, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getMe (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))
+2025-07-16 10:32:12,189 - __main__ - INFO - Bot stopped.
+2025-07-16 10:32:22,855 - database.db - INFO - Database tables created successfully
+2025-07-16 10:32:22,856 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:32:32,906 - __main__ - ERROR - Fatal error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659840&timeout=20 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\http\client.py", line 1374, in getresponse
+    response.begin()
+  File "C:\Program Files\Python311\Lib\http\client.py", line 318, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\http\client.py", line 287, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+The above exception was the direct cause of the following exception:
+
+urllib3.exceptions.ProxyError: ('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response'))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659840&timeout=20 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 162, in _make_request
+    result = _get_req_session().request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\requests\adapters.py", line 513, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot5496443950:AAGCGeR22raKLbU55YyPswsZf5u3yDWD1j8/getUpdates?offset=454659840&timeout=20 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
+2025-07-16 10:32:32,919 - __main__ - INFO - Bot stopped.
+2025-07-16 10:33:11,210 - database.db - INFO - Database tables created successfully
+2025-07-16 10:33:11,210 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:33:18,333 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:33:18,336 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:33:18,336 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:33:18,336 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:33:19,099 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:33:19,099 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:33:19,124 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:35:08,684 - __main__ - INFO - Bot stopped.
+2025-07-16 10:37:06,811 - database.db - INFO - Database tables created successfully
+2025-07-16 10:37:06,811 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:37:21,330 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:37:21,331 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:37:21,331 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:37:21,332 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:37:21,946 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:37:21,946 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:37:21,955 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:37:26,050 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:37:26,052 - __main__ - INFO - Bot stopped.
+2025-07-16 10:41:03,182 - database.db - INFO - Database tables created successfully
+2025-07-16 10:41:03,183 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:41:07,115 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:41:07,120 - __main__ - INFO - Bot stopped.
+2025-07-16 10:42:22,125 - database.db - INFO - Database tables created successfully
+2025-07-16 10:42:22,125 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:42:24,109 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:42:24,118 - __main__ - INFO - Bot stopped.
+2025-07-16 10:42:54,555 - database.db - INFO - Database tables created successfully
+2025-07-16 10:42:54,556 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:42:57,129 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:42:57,131 - __main__ - INFO - Bot stopped.
+2025-07-16 10:43:38,095 - database.db - INFO - Database tables created successfully
+2025-07-16 10:43:38,096 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:43:40,585 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:43:40,587 - __main__ - INFO - Bot stopped.
+2025-07-16 10:44:07,574 - database.db - INFO - Database tables created successfully
+2025-07-16 10:44:07,574 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:44:09,736 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:44:09,740 - __main__ - INFO - Bot stopped.
+2025-07-16 10:44:36,363 - database.db - INFO - Database tables created successfully
+2025-07-16 10:44:36,363 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:44:40,403 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:44:40,410 - __main__ - INFO - Bot stopped.
+2025-07-16 10:44:51,337 - database.db - INFO - Database tables created successfully
+2025-07-16 10:44:51,338 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:44:53,039 - __main__ - ERROR - Fatal error: Object of type KeyboardButton is not JSON serializable
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 336, in admin_panel
+    bot.send_message(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1800, in send_message
+    apihelper.send_message(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 254, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 2477, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\types.py", line 2581, in to_json
+    return json.dumps(json_dict)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type KeyboardButton is not JSON serializable
+2025-07-16 10:44:53,057 - __main__ - INFO - Bot stopped.
+2025-07-16 10:45:56,566 - database.db - INFO - Database tables created successfully
+2025-07-16 10:45:56,567 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:46:04,659 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:46:04,665 - __main__ - INFO - Bot stopped.
+2025-07-16 10:46:36,727 - database.db - INFO - Database tables created successfully
+2025-07-16 10:46:36,727 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:46:38,595 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got an unexpected keyword argument 'keyboard'
+2025-07-16 10:46:38,597 - __main__ - INFO - Bot stopped.
+2025-07-16 10:47:16,114 - database.db - INFO - Database tables created successfully
+2025-07-16 10:47:16,114 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:47:17,766 - __main__ - ERROR - Fatal error: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 330, in admin_panel
+    reply_markup = ReplyKeyboardMarkup(
+                   ^^^^^^^^^^^^^^^^^^^^
+TypeError: ReplyKeyboardMarkup.__init__() got multiple values for argument 'resize_keyboard'
+2025-07-16 10:47:17,767 - __main__ - INFO - Bot stopped.
+2025-07-16 10:47:56,998 - database.db - INFO - Database tables created successfully
+2025-07-16 10:47:56,999 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:48:10,127 - __main__ - ERROR - Fatal error: Object of type KeyboardButton is not JSON serializable
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 87, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\main.py", line 52, in admin
+    admin_panel(bot, message)
+  File "E:\project\wizu\wizuh\bot\handlers\admin.py", line 337, in admin_panel
+    bot.send_message(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1800, in send_message
+    apihelper.send_message(
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 254, in send_message
+    payload['reply_markup'] = _convert_markup(reply_markup)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\apihelper.py", line 2477, in _convert_markup
+    return markup.to_json()
+           ^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\types.py", line 2581, in to_json
+    return json.dumps(json_dict)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type KeyboardButton is not JSON serializable
+2025-07-16 10:48:10,128 - __main__ - INFO - Bot stopped.
+2025-07-16 10:48:45,507 - database.db - INFO - Database tables created successfully
+2025-07-16 10:48:45,507 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:48:55,149 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:48:55,151 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:48:55,151 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:48:55,152 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:48:55,376 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:48:55,376 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:48:55,377 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:49:05,593 - __main__ - INFO - Bot stopped.
+2025-07-16 10:51:04,986 - database.db - INFO - Database tables created successfully
+2025-07-16 10:51:04,986 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 10:51:32,967 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 10:51:32,968 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 10:51:32,969 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 10:51:32,970 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 10:51:33,139 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 10:51:33,139 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 10:51:33,140 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 10:51:50,953 - __main__ - INFO - Bot stopped.
