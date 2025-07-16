@@ -132,7 +132,6 @@ class Config(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     last_used = Column(DateTime)
     
-    user = relationship("User", back_populates="configs")
     server = relationship("Server", back_populates="configs")
     
     @property
