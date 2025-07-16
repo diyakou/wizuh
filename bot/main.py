@@ -80,10 +80,6 @@ def admin_panel_message(message):
 def admin_message(message):
     handle_admin_message(bot, message)
 
-# Register server management handlers
-from bot.handlers.server_management import register_handlers as register_server_handlers
-register_server_handlers(bot)
-
 def main():
     logger.info("Bot is running... Press Ctrl+C to stop")
     try:

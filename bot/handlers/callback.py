@@ -35,6 +35,12 @@ def callback_handler(bot, call):
         user_id = query.from_user.id
         is_admin = user_id in ADMIN_IDS
         
+        # Handle server management callbacks
+        if query.data.startswith("server_") or query.data.startswith("edit_server_") or query.data.startswith("delete_server_") or query.data.startswith("confirm_delete_") or query.data == "back_to_server_menu" or query.data == "cancel_server_add":
+            from bot.handlers.server_management import handle_server_callback
+            handle_server_callback(bot, query)
+            return
+
         # Handle admin callbacks
         if query.data.startswith("admin_") and is_admin:
             handle_admin_callback(bot, query)
@@ -66,20 +72,8 @@ def handle_admin_callback(bot, query) -> None:
         )
         return
 
-    # Handle server management
-    if callback_data == "admin_servers" or callback_data in [
-        'server_add', 'server_list', 'server_status', 'server_test', 'back_to_server_menu', 'cancel_server_add'
-    ] or callback_data.startswith(('edit_server_', 'delete_server_', 'confirm_delete_')):
-        from bot.handlers.server_management import handle_server_callback, show_server_menu
-        if callback_data == "admin_servers":
-            show_server_menu(bot, query.message.chat.id, query.message.message_id)
-        else:
-            handle_server_callback(bot, query)
-        return
-    
     # Admin main menu options
-    
-    elif callback_data == "admin_users":
+    if callback_data == "admin_users":
         bot.edit_message_text(
             "مدیریت کاربران - لطفاً یک گزینه را انتخاب کنید:",
             query.message.chat.id,

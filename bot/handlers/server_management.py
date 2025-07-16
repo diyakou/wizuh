@@ -290,22 +290,6 @@ def cancel_server_add(bot, call):
     
     bot.edit_message_text("❌ فرآیند افزودن سرور لغو شد.", call.message.chat.id, call.message.message_id)
 
-def register_handlers(bot):
-    """Register handlers for server management."""
-    # Command handlers
-    bot.message_handler(commands=['addserver'])(lambda message: start_server_add(bot, message))
-    
-    # Message handlers for server management process
-    bot.message_handler(func=lambda message: message.from_user.id in user_states)(
-        lambda message: handle_server_management_message(bot, message)
-    )
-    
-    # Callback handlers for server management
-    bot.callback_query_handler(func=lambda call: call.data in [
-        'server_add', 'server_list', 'server_status', 'server_test', 'back_to_server_menu', 'cancel_server_add'
-    ] or call.data.startswith(('edit_server_', 'delete_server_', 'confirm_delete_')))(
-        lambda call: handle_server_callback(bot, call)
-    )
 
 def handle_server_callback(bot, call):
     """Handle server management callbacks."""
