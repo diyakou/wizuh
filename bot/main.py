@@ -8,7 +8,6 @@ from bot.handlers.user import (
 )
 from bot.handlers.admin import admin_panel, admin_backup, admin_broadcast, handle_admin_message
 from bot.handlers.callback import callback_handler
-from bot.handlers.server_management import start_server_add, cancel_server_add
 from bot.handlers.category_management import get_category_management_handlers
 from bot.handlers.plan_management import get_plan_management_handlers
 from bot.handlers.settings_management import get_settings_management_handlers
@@ -62,6 +61,10 @@ def broadcast(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
     callback_handler(bot, call)
+
+# Register server management handlers
+from bot.handlers.server_management import register_handlers as register_server_handlers
+register_server_handlers(bot)
 
 # These handlers are more complex and will be handled in their respective files
 # for handler in get_category_management_handlers():

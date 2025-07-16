@@ -1060,3 +1060,140 @@ TypeError: Object of type KeyboardButton is not JSON serializable
 2025-07-16 10:51:33,139 - bot.handlers.user - INFO - Querying database for user...
 2025-07-16 10:51:33,140 - bot.handlers.user - INFO - Sending welcome message...
 2025-07-16 10:51:50,953 - __main__ - INFO - Bot stopped.
+2025-07-16 11:11:56,422 - database.db - INFO - Database tables created successfully
+2025-07-16 11:11:56,424 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:12:04,130 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:12:04,130 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:12:04,131 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:12:04,132 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:12:04,760 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:12:04,760 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:12:04,788 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:14:54,364 - __main__ - INFO - Bot stopped.
+2025-07-16 11:14:56,443 - database.db - INFO - Database tables created successfully
+2025-07-16 11:14:56,443 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:15:48,043 - __main__ - INFO - Bot stopped.
+2025-07-16 11:22:27,988 - database.db - INFO - Database tables created successfully
+2025-07-16 11:22:27,989 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:22:33,323 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:22:33,323 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:22:33,324 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:22:33,325 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:22:33,745 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:22:33,745 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:22:33,771 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:22:39,034 - __main__ - ERROR - Fatal error: 'Message' object has no attribute 'data'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 91, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9755, in _run_middlewares_and_handler
+    if self._test_message_handler(handler, message):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9684, in _test_message_handler
+    if not self._test_filter(message_filter, filter_value, message):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9708, in _test_filter
+    return filter_value(message)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\wizu\wizuh\bot\handlers\server_management.py", line 283, in <lambda>
+    (cancel_server_add, {'func': lambda call: call.data == 'cancel_server_add'}),
+                                              ^^^^^^^^^
+AttributeError: 'Message' object has no attribute 'data'
+2025-07-16 11:22:39,038 - __main__ - INFO - Bot stopped.
+2025-07-16 11:23:41,903 - database.db - INFO - Database tables created successfully
+2025-07-16 11:23:41,904 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:23:51,220 - __main__ - ERROR - Fatal error: handle_server_management_message() missing 1 required positional argument: 'message'
+Traceback (most recent call last):
+  File "E:\project\wizu\wizuh\bot\main.py", line 91, in main
+    bot.polling(none_stop=True)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1198, in polling
+    self.__threaded_polling(non_stop=non_stop, interval=interval, timeout=timeout, long_polling_timeout=long_polling_timeout,
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1273, in __threaded_polling
+    raise e
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 1235, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "E:\project\wizu\wizuh\ss\Lib\site-packages\telebot\__init__.py", line 9759, in _run_middlewares_and_handler
+    result = handler['function'](message)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: handle_server_management_message() missing 1 required positional argument: 'message'
+2025-07-16 11:23:51,221 - __main__ - INFO - Bot stopped.
+2025-07-16 11:25:52,013 - database.db - INFO - Database tables created successfully
+2025-07-16 11:25:52,013 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:26:37,632 - bot.handlers.server_management - ERROR - Error validating panel credentials: 'Server' object has no attribute 'save'
+2025-07-16 11:27:40,698 - __main__ - INFO - Bot stopped.
+2025-07-16 11:27:43,293 - database.db - INFO - Database tables created successfully
+2025-07-16 11:27:43,293 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:27:49,325 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:27:49,325 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:27:49,326 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:27:49,327 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:27:49,830 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:27:49,830 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:27:49,854 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:28:32,505 - bot.handlers.server_management - ERROR - Error validating panel credentials: 'remark' is an invalid keyword argument for Server
+2025-07-16 11:29:18,484 - __main__ - INFO - Bot stopped.
+2025-07-16 11:29:31,122 - database.db - INFO - Database tables created successfully
+2025-07-16 11:29:31,122 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:33:18,512 - __main__ - INFO - Bot stopped.
+2025-07-16 11:33:20,819 - database.db - INFO - Database tables created successfully
+2025-07-16 11:33:20,847 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:33:23,512 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:33:23,512 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:33:23,513 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:33:23,514 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:33:23,963 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:33:23,964 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:33:24,016 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:35:41,995 - __main__ - INFO - Bot stopped.
+2025-07-16 11:35:44,112 - database.db - INFO - Database tables created successfully
+2025-07-16 11:35:44,112 - __main__ - INFO - Bot is running... Press Ctrl+C to stop
+2025-07-16 11:35:51,214 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:35:51,214 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:35:51,215 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:35:51,216 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:35:52,765 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:35:52,765 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:35:52,795 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:36:08,544 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:36:08,545 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:36:08,545 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:36:08,546 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:36:08,682 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:36:08,682 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:36:08,685 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:36:11,580 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:36:11,581 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:36:11,582 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:36:11,583 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:36:11,774 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:36:11,774 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:36:11,777 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:38:27,184 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:38:27,185 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:38:27,186 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:38:27,186 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:38:27,373 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:38:27,374 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:38:27,378 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:38:40,280 - bot.handlers.user - INFO - Received /start command from user 1879326595
+2025-07-16 11:38:40,281 - bot.handlers.user - INFO - Processing user: 1879326595, username: exchi
+2025-07-16 11:38:40,282 - bot.handlers.user - INFO - Checking channel membership...
+2025-07-16 11:38:40,282 - bot.handlers.user - INFO - Checking membership for user 1879326595 in channel @KafkaSpeed, lock_enabled=True
+2025-07-16 11:38:40,420 - bot.handlers.user - INFO - Membership status: creator
+2025-07-16 11:38:40,420 - bot.handlers.user - INFO - Querying database for user...
+2025-07-16 11:38:40,421 - bot.handlers.user - INFO - Sending welcome message...
+2025-07-16 11:38:52,787 - __main__ - INFO - Bot stopped.

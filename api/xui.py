@@ -97,6 +97,14 @@ class XUIAPI:
         """Get client traffic statistics."""
         return self._make_request("GET", f"/client/{client_id}/traffic")
     
+    def test_connection(self) -> bool:
+        """Test connection to XUI panel."""
+        try:
+            self._make_request("GET", "/status")
+            return True
+        except XUIAPIError:
+            return False
+    
     def generate_config_link(self, client_id: str, protocol: str) -> str:
         """
         Generate configuration link for client.

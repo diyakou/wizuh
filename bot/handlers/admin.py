@@ -573,57 +573,14 @@ def handle_plan_description(bot, message):
         )
     user_states.pop(message.chat.id, None)
 
+from bot.handlers.server_management import (
+    start_server_add,
+    handle_server_management_message,
+    cancel_server_add,
+)
 def handle_server_management(bot, message):
-    keyboard = [
-        [InlineKeyboardButton("🖥 سرورهای موجود", callback_data="servers_list")],
-        [InlineKeyboardButton("➕ افزودن سرور", callback_data="server_add")],
-        [InlineKeyboardButton("✏️ ویرایش سرور", callback_data="server_edit")],
-        [InlineKeyboardButton("❌ حذف سرور", callback_data="server_delete")],
-        [InlineKeyboardButton("📊 وضعیت سرورها", callback_data="server_status")],
-        [InlineKeyboardButton("🔄 همگام‌سازی", callback_data="server_sync")],
-        [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
-    ]
-    bot.send_message(
-        message.chat.id,
-        "🖥 مدیریت سرورها\n"
-        "لطفاً یک گزینه را انتخاب کنید:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
-
-def add_server(bot, message):
-    user_states[message.chat.id] = 'WAITING_SERVER_INFO'
-    bot.send_message(
-        message.chat.id,
-        "لطفاً اطلاعات سرور را در قالب زیر وارد کنید:\n"
-        "IP|PORT|USERNAME|PASSWORD|TYPE\n"
-        "مثال:\n"
-        "1.2.3.4|8080|admin|pass123|xui"
-    )
-
-def handle_server_info(bot, message):
-    try:
-        ip, port, username, password, server_type = message.text.split("|")
-        server = Server(
-            ip=ip.strip(),
-            port=int(port.strip()),
-            username=username.strip(),
-            password=password.strip(),
-            type=server_type.strip()
-        )
-        server.save()
-        bot.send_message(
-            message.chat.id,
-            "سرور با موفقیت اضافه شد.",
-            reply_markup=get_server_management_menu()
-        )
-    except Exception as e:
-        logger.error(f"Error adding server: {e}")
-        bot.send_message(
-            message.chat.id,
-            "خطا در افزودن سرور. لطفاً مجدداً تلاش کنید.",
-            reply_markup=get_server_management_menu()
-        )
-    user_states.pop(message.chat.id, None)
+    """Delegates server management to the server_management handler."""
+    start_server_add(bot, message)
 
 def handle_user_management(bot, message):
     keyboard = [

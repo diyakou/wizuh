@@ -22,15 +22,11 @@ def get_admin_main_menu() -> InlineKeyboardMarkup:
 def get_server_management_menu() -> InlineKeyboardMarkup:
     """Get server management menu keyboard."""
     keyboard = [
-        [
-            InlineKeyboardButton("افزودن سرور", callback_data="add_server"),
-            InlineKeyboardButton("لیست سرورها", callback_data="list_servers")
-        ],
-        [
-            InlineKeyboardButton("وضعیت سرورها", callback_data="server_status"),
-            InlineKeyboardButton("حذف سرور", callback_data="delete_server")
-        ],
-        [InlineKeyboardButton("بازگشت", callback_data="admin_menu")]
+        [InlineKeyboardButton("🖥 لیست سرورها", callback_data="server_list")],
+        [InlineKeyboardButton("➕ افزودن سرور", callback_data="server_add")],
+        [InlineKeyboardButton("📊 وضعیت سرورها", callback_data="server_status")],
+        [InlineKeyboardButton("🔄 تست اتصال", callback_data="server_test")],
+        [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin")]
     ]
     return InlineKeyboardMarkup(keyboard)
 

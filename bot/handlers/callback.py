@@ -56,14 +56,18 @@ def handle_admin_callback(bot, query) -> None:
     """Handle admin-specific callbacks."""
     callback_data = query.data
     
+    # Handle server management
+    if callback_data == "admin_servers" or callback_data in [
+        'server_add', 'server_list', 'server_status', 'server_test', 'back_to_server_menu', 'cancel_server_add'
+    ] or callback_data.startswith(('edit_server_', 'delete_server_', 'confirm_delete_')):
+        from bot.handlers.server_management import handle_server_callback, show_server_menu
+        if callback_data == "admin_servers":
+            show_server_menu(bot, query.message.chat.id, query.message.message_id)
+        else:
+            handle_server_callback(bot, query)
+        return
+    
     # Admin main menu options
-    if callback_data == "admin_servers":
-        bot.edit_message_text(
-            "مدیریت سرورها - لطفاً یک گزینه را انتخاب کنید:",
-            query.message.chat.id,
-            query.message.message_id,
-            reply_markup=get_server_management_menu()
-        )
     
     elif callback_data == "admin_users":
         bot.edit_message_text(
@@ -99,8 +103,8 @@ def handle_admin_callback(bot, query) -> None:
     
     # Server management
     elif callback_data == "add_server":
-        from bot.handlers.admin import add_server
-        add_server(bot, query.message)
+        from bot.handlers.server_management import start_server_add
+        start_server_add(bot, query.message)
     
     elif callback_data == "list_servers":
         servers = Server.get_all()
