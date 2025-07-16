@@ -62,10 +62,6 @@ def broadcast(message):
 def callback(call):
     callback_handler(bot, call)
 
-# Register server management handlers
-from bot.handlers.server_management import register_handlers as register_server_handlers
-register_server_handlers(bot)
-
 # These handlers are more complex and will be handled in their respective files
 # for handler in get_category_management_handlers():
 #     bot.add_message_handler(handler)
@@ -83,6 +79,10 @@ def admin_panel_message(message):
 @bot.message_handler(regexp='^(🛠 تنظیمات درگاه‌های پرداخت|📢 تنظیمات کانال|📁 مدیریت دسته‌بندی‌ها|💰 مدیریت پلن‌ها|🖥 مدیریت سرورها|📊 گزارش‌ها|📨 ارسال پیام همگانی|💾 پشتیبان‌گیری|👥 مدیریت کاربران|🔙 بازگشت به منوی اصلی)$')
 def admin_message(message):
     handle_admin_message(bot, message)
+
+# Register server management handlers
+from bot.handlers.server_management import register_handlers as register_server_handlers
+register_server_handlers(bot)
 
 def main():
     logger.info("Bot is running... Press Ctrl+C to stop")

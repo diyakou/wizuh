@@ -518,18 +518,13 @@ def handle_plan_description(bot, message):
     user_states.pop(message.chat.id, None)
 
 from bot.handlers.server_management import (
-    start_server_add,
+    show_server_menu,
     handle_server_management_message,
     cancel_server_add,
 )
 def handle_server_management(bot, message):
     """Shows the server management menu."""
-    bot.send_message(
-        message.chat.id,
-        "🖥 مدیریت سرورها\n"
-        "لطفاً یک گزینه را انتخاب کنید:",
-        reply_markup=get_server_management_menu()
-    )
+    show_server_menu(bot, message.chat.id)
 
 def handle_user_management(bot, message):
     keyboard = [
