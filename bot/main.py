@@ -1,10 +1,5 @@
-import asyncio
+import telebot
 import logging
-import platform
-import signal
-import traceback
-from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ConversationHandler, PicklePersistence
-from telegram import Update
 from config.settings import TELEGRAM_BOT_TOKEN
 from database.db import init_db
 from bot.handlers.user import (
@@ -28,79 +23,72 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-async def error_handler(update, context):
-    logger.error(f"Update {update} caused error {context.error}", exc_info=True)
+bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-async def main():
-    logger.info("Initializing bot...")
-    init_db()
+init_db()
 
-    persistence = PicklePersistence(filepath="bot_persistence")
-    app = Application.builder().token(TELEGRAM_BOT_TOKEN).persistence(persistence).build()
+@bot.message_handler(commands=['start'])
+def start(message):
+    start_handler(bot, message)
 
-    # Add all handlers
-    app.add_handler(CommandHandler("start", start_handler))
-    app.add_handler(MessageHandler(filters.Regex("^(🛒 خرید اشتراک|📱 کانفیگ های من|💰 کیف پول|❓ راهنما|👤 پروفایل)$"), handle_main_menu))
-    app.add_handler(MessageHandler(filters.Regex("^🔙 بازگشت به منوی اصلی$"), handle_back_to_main))
-    app.add_handler(MessageHandler(filters.Regex("^(💳 افزایش موجودی|📊 تراکنش ها)$"), handle_wallet_menu))
-    app.add_handler(MessageHandler(filters.Regex("^(📝 ویرایش نام|📞 ویرایش شماره)$"), handle_profile_menu))
-    app.add_handler(CommandHandler("admin", admin_panel))
-    app.add_handler(CommandHandler("backup", admin_backup))
-    app.add_handler(CommandHandler("broadcast", admin_broadcast))
-    app.add_handler(CallbackQueryHandler(callback_handler))
+@bot.message_handler(regexp="^(🛒 خرید اشتراک|📱 کانفیگ های من|💰 کیف پول|❓ راهنما|👤 پروفایل)$")
+def main_menu(message):
+    handle_main_menu(bot, message)
 
-    server_conv = ConversationHandler(
-        entry_points=[CommandHandler("add_server", start_server_add)],
-        states={},
-        fallbacks=[CallbackQueryHandler(cancel_server_add, pattern="^cancel_server_add$")]
-    )
-    app.add_handler(server_conv)
+@bot.message_handler(regexp="^🔙 بازگشت به منوی اصلی$")
+def back_to_main(message):
+    handle_back_to_main(bot, message)
 
-    for h in get_category_management_handlers():
-        app.add_handler(h)
-    for h in get_plan_management_handlers():
-        app.add_handler(h)
-    for h in get_settings_management_handlers():
-        app.add_handler(h)
+@bot.message_handler(regexp="^(💳 افزایش موجودی|📊 تراکنش ها)$")
+def wallet_menu(message):
+    handle_wallet_menu(bot, message)
 
-    app.add_handler(MessageHandler(filters.Regex('^🎛 پنل مدیریت$'), admin_panel))
-    app.add_handler(MessageHandler(
-        filters.Regex('^(🛠 تنظیمات درگاه‌های پرداخت|📢 تنظیمات کانال|📁 مدیریت دسته‌بندی‌ها|💰 مدیریت پلن‌ها|🖥 مدیریت سرورها|📊 گزارش‌ها|📨 ارسال پیام همگانی|💾 پشتیبان‌گیری|👥 مدیریت کاربران|🔙 بازگشت به منوی اصلی)$'),
-        handle_admin_message
-    ))
+@bot.message_handler(regexp="^(📝 ویرایش نام|📞 ویرایش شماره)$")
+def profile_menu(message):
+    handle_profile_menu(bot, message)
 
-    app.add_error_handler(error_handler)
+@bot.message_handler(commands=['admin'])
+def admin(message):
+    admin_panel(bot, message)
 
-    await app.initialize()
-    logger.info("Bot is running... Press Ctrl+C to stop")
+@bot.message_handler(commands=['backup'])
+def backup(message):
+    admin_backup(bot, message)
 
-    try:
-        await app.start()
-        await app.run_polling(allowed_updates=Update.ALL_TYPES)
-    finally:
-        logger.info("Shutting down application...")
-        await app.shutdown()
-        logger.info("Shutdown complete.")
+@bot.message_handler(commands=['broadcast'])
+def broadcast(message):
+    admin_broadcast(bot, message)
 
-def handle_shutdown(loop, app):
-    logger.info("Received SIGINT, initiating shutdown...")
-    tasks = [task for task in asyncio.all_tasks(loop) if task is not asyncio.current_task()]
-    for task in tasks:
-        task.cancel()
-    loop.run_until_complete(app.shutdown())
-    loop.run_until_complete(loop.shutdown_asyncgens())
-    loop.close()
-    logger.info("Event loop closed.")
+@bot.callback_query_handler(func=lambda call: True)
+def callback(call):
+    callback_handler(bot, call)
 
-if __name__ == "__main__":
-    if platform.system() == "Windows":
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+# These handlers are more complex and will be handled in their respective files
+# for handler in get_category_management_handlers():
+#     bot.add_message_handler(handler)
+
+# for handler in get_plan_management_handlers():
+#     bot.add_message_handler(handler)
+
+# for handler in get_settings_management_handlers():
+#     bot.add_message_handler(handler)
+
+@bot.message_handler(regexp='^🎛 پنل مدیریت$')
+def admin_panel_message(message):
+    admin_panel(bot, message)
     
-    loop = asyncio.get_event_loop()
-    app = None  # Will be initialized in main()
+@bot.message_handler(regexp='^(🛠 تنظیمات درگاه‌های پرداخت|📢 تنظیمات کانال|📁 مدیریت دسته‌بندی‌ها|💰 مدیریت پلن‌ها|🖥 مدیریت سرورها|📊 گزارش‌ها|📨 ارسال پیام همگانی|💾 پشتیبان‌گیری|👥 مدیریت کاربران|🔙 بازگشت به منوی اصلی)$')
+def admin_message(message):
+    handle_admin_message(bot, message)
+
+def main():
+    logger.info("Bot is running... Press Ctrl+C to stop")
     try:
-        app = asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        handle_shutdown(loop, app)
+        bot.polling(none_stop=True)
     except Exception as e:
         logger.error(f"Fatal error: {e}", exc_info=True)
+    finally:
+        logger.info("Bot stopped.")
+
+if __name__ == "__main__":
+    main()

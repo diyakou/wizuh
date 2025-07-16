@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 def get_admin_main_menu() -> InlineKeyboardMarkup:
     """Get main admin menu keyboard."""
@@ -92,4 +92,4 @@ def get_reports_menu() -> InlineKeyboardMarkup:
         ],
         [InlineKeyboardButton("بازگشت", callback_data="admin_menu")]
     ]
-    return InlineKeyboardMarkup(keyboard) 
+    return InlineKeyboardMarkup(keyboard)

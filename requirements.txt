@@ -1,4 +1,4 @@
-python-telegram-bot==20.6
+py-telegram-bot-api
 SQLAlchemy==2.0.23
 alembic==1.12.1
 requests==2.31.0

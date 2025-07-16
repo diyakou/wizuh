@@ -1,132 +1,139 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler, MessageHandler, filters
+from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.models import ServerPlan, ServerCategory, Server
 from bot.states import (
-    PLAN_NAME, PLAN_VOLUME, PLAN_DURATION, PLAN_PRICE, PLAN_CATEGORY, PLAN_SERVERS, PLAN_CONFIRM,
-    get_plan_data, clear_plan_data
+    PLAN_NAME, PLAN_VOLUME, PLAN_DURATION, PLAN_PRICE, PLAN_CATEGORY, PLAN_SERVERS, PLAN_CONFIRM
 )
 import logging
-import re
+from database.db import session
 
 logger = logging.getLogger(__name__)
 
-async def start_add_plan(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+user_states = {}
+
+def start_add_plan(bot, message):
     """Start the plan addition process."""
-    # Clear any existing plan data
-    clear_plan_data(context)
-    
-    await update.message.reply_text(
+    user_id = message.from_user.id
+    user_states[user_id] = {'state': PLAN_NAME, 'data': {}}
+    bot.send_message(
+        message.chat.id,
         "لطفاً نام پلن جدید را وارد کنید (مثلاً: پلن ۱۰ گیگ ۳۰ روزه):"
     )
-    return PLAN_NAME
 
-async def handle_plan_name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_plan_management_message(bot, message):
+    user_id = message.from_user.id
+    if user_id not in user_states:
+        return
+
+    state = user_states[user_id]['state']
+
+    if state == PLAN_NAME:
+        handle_plan_name(bot, message)
+    elif state == PLAN_VOLUME:
+        handle_plan_volume(bot, message)
+    elif state == PLAN_DURATION:
+        handle_plan_duration(bot, message)
+    elif state == PLAN_PRICE:
+        handle_plan_price(bot, message)
+
+def handle_plan_name(bot, message):
     """Handle the plan name input."""
-    name = update.message.text.strip()
+    user_id = message.from_user.id
+    name = message.text.strip()
     
-    # Validate name
     if len(name) < 3 or len(name) > 50:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ نام پلن باید بین 3 تا 50 کاراکتر باشد. لطفاً دوباره وارد کنید:"
         )
-        return PLAN_NAME
+        return
     
-    # Check if plan with this name exists
-    from database.db import session
     existing = session.query(ServerPlan).filter_by(title=name).first()
     if existing:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ پلن با این نام قبلاً ثبت شده است. لطفاً نام دیگری وارد کنید:"
         )
-        return PLAN_NAME
+        return
     
-    # Store the name
-    plan_data = get_plan_data(context)
-    plan_data['title'] = name
+    user_states[user_id]['data']['title'] = name
+    user_states[user_id]['state'] = PLAN_VOLUME
     
-    # Ask for volume
-    await update.message.reply_text(
+    bot.send_message(
+        message.chat.id,
         "لطفاً حجم پلن را به مگابایت وارد کنید (مثلاً 10000 برای 10 گیگ):"
     )
-    return PLAN_VOLUME
 
-async def handle_plan_volume(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_plan_volume(bot, message):
     """Handle the plan volume input."""
+    user_id = message.from_user.id
     try:
-        volume = int(update.message.text.strip())
+        volume = int(message.text.strip())
         if volume <= 0:
             raise ValueError("Volume must be positive")
         
-        # Store the volume
-        plan_data = get_plan_data(context)
-        plan_data['volume'] = volume
+        user_states[user_id]['data']['volume'] = volume
+        user_states[user_id]['state'] = PLAN_DURATION
         
-        # Ask for duration
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "لطفاً مدت زمان پلن را به روز وارد کنید (مثلاً 30 برای یک ماه):"
         )
-        return PLAN_DURATION
         
     except ValueError:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ لطفاً یک عدد صحیح مثبت وارد کنید:"
         )
-        return PLAN_VOLUME
 
-async def handle_plan_duration(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_plan_duration(bot, message):
     """Handle the plan duration input."""
+    user_id = message.from_user.id
     try:
-        duration = int(update.message.text.strip())
+        duration = int(message.text.strip())
         if duration <= 0:
             raise ValueError("Duration must be positive")
         
-        # Store the duration
-        plan_data = get_plan_data(context)
-        plan_data['duration'] = duration
+        user_states[user_id]['data']['duration'] = duration
+        user_states[user_id]['state'] = PLAN_PRICE
         
-        # Ask for price
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "لطفاً قیمت پلن را به تومان وارد کنید (مثلاً 50000):"
         )
-        return PLAN_PRICE
         
     except ValueError:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ لطفاً یک عدد صحیح مثبت وارد کنید:"
         )
-        return PLAN_DURATION
 
-async def handle_plan_price(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_plan_price(bot, message):
     """Handle the plan price input."""
+    user_id = message.from_user.id
     try:
-        price = int(update.message.text.strip())
+        price = int(message.text.strip())
         if price <= 0:
             raise ValueError("Price must be positive")
         
-        # Store the price
-        plan_data = get_plan_data(context)
-        plan_data['price'] = price
+        user_states[user_id]['data']['price'] = price
         
-        # Show category selection if categories exist
-        from database.db import session
         categories = session.query(ServerCategory).filter_by(is_active=True).all()
         
         if categories:
-            return await show_category_selection(update, context)
+            show_category_selection(bot, message)
         else:
-            # Skip to server selection if no categories
-            plan_data['category_id'] = None
-            return await show_server_selection(update, context)
+            user_states[user_id]['data']['category_id'] = None
+            show_server_selection(bot, message)
         
     except ValueError:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ لطفاً یک عدد صحیح مثبت وارد کنید:"
         )
-        return PLAN_PRICE
 
-async def show_category_selection(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def show_category_selection(bot, message):
     """Show category selection keyboard."""
-    from database.db import session
+    user_id = message.from_user.id
     categories = session.query(ServerCategory).filter_by(is_active=True).all()
     
     keyboard = []
@@ -139,128 +146,122 @@ async def show_category_selection(update: Update, context: ContextTypes.DEFAULT_
             )
         ])
     
-    # Add "No Category" option
     keyboard.append([
         InlineKeyboardButton("بدون دسته‌بندی", callback_data="no_category")
     ])
     
     keyboard.append([
-        InlineKeyboardButton("❌ لغو", callback_data="cancel")
+        InlineKeyboardButton("❌ لغو", callback_data="cancel_plan")
     ])
     
-    await update.message.reply_text(
+    bot.send_message(
+        message.chat.id,
         "لطفاً دسته‌بندی پلن را انتخاب کنید:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-    return PLAN_CATEGORY
+    user_states[user_id]['state'] = PLAN_CATEGORY
 
-async def handle_category_selection(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_category_selection(bot, call):
     """Handle category selection callback."""
-    query = update.callback_query
-    await query.answer()
+    user_id = call.from_user.id
+    query = call
     
-    if query.data == "cancel":
-        await query.message.edit_text("❌ عملیات لغو شد.")
-        return ConversationHandler.END
-    
-    plan_data = get_plan_data(context)
+    if query.data == "cancel_plan":
+        bot.edit_message_text("❌ عملیات لغو شد.", query.message.chat.id, query.message.message_id)
+        user_states.pop(user_id, None)
+        return
     
     if query.data == "no_category":
-        plan_data['category_id'] = None
+        user_states[user_id]['data']['category_id'] = None
     else:
         category_id = int(query.data.split('_')[-1])
-        plan_data['category_id'] = category_id
+        user_states[user_id]['data']['category_id'] = category_id
     
-    # Move to server selection
-    return await show_server_selection(query, context)
+    show_server_selection(bot, query.message)
 
-async def show_server_selection(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def show_server_selection(bot, message):
     """Show server selection keyboard."""
-    from database.db import session
+    user_id = message.from_user.id
     servers = session.query(Server).filter_by(is_active=True).all()
     
     if not servers:
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "❌ هیچ سروری برای انتخاب وجود ندارد. لطفاً ابتدا سرور اضافه کنید."
         )
-        return ConversationHandler.END
+        user_states.pop(user_id, None)
+        return
     
     keyboard = []
-    plan_data = get_plan_data(context)
-    selected_servers = plan_data.get('server_ids', [])
+    selected_servers = user_states[user_id]['data'].get('server_ids', [])
     
     for server in servers:
         mark = "✅ " if server.id in selected_servers else ""
         keyboard.append([
             InlineKeyboardButton(
-                f"{mark}{server.title}",
+                f"{mark}{server.name}",
                 callback_data=f"select_server_{server.id}"
             )
         ])
     
-    # Add Done button if at least one server is selected
     if selected_servers:
         keyboard.append([
-            InlineKeyboardButton("✅ تأیید و ادامه", callback_data="servers_done")
+            InlineKeyboardButton("✅ تأیید و ادامه", callback_data="servers_done_plan")
         ])
     
     keyboard.append([
-        InlineKeyboardButton("❌ لغو", callback_data="cancel")
+        InlineKeyboardButton("❌ لغو", callback_data="cancel_plan")
     ])
     
-    await update.message.reply_text(
+    bot.send_message(
+        message.chat.id,
         "لطفاً سرورهای مرتبط با این پلن را انتخاب کنید:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-    return PLAN_SERVERS
+    user_states[user_id]['state'] = PLAN_SERVERS
 
-async def handle_server_selection(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def handle_server_selection(bot, call):
     """Handle server selection callbacks."""
-    query = update.callback_query
-    await query.answer()
+    user_id = call.from_user.id
+    query = call
     
-    if query.data == "cancel":
-        await query.message.edit_text("❌ عملیات لغو شد.")
-        return ConversationHandler.END
+    if query.data == "cancel_plan":
+        bot.edit_message_text("❌ عملیات لغو شد.", query.message.chat.id, query.message.message_id)
+        user_states.pop(user_id, None)
+        return
     
-    if query.data == "servers_done":
-        return await show_confirmation(update, context)
+    if query.data == "servers_done_plan":
+        show_confirmation(bot, query)
+        return
     
-    # Handle server selection
     server_id = int(query.data.split('_')[-1])
-    plan_data = get_plan_data(context)
     
-    if 'server_ids' not in plan_data:
-        plan_data['server_ids'] = []
+    if 'server_ids' not in user_states[user_id]['data']:
+        user_states[user_id]['data']['server_ids'] = []
     
-    # Toggle server selection
-    if server_id in plan_data['server_ids']:
-        plan_data['server_ids'].remove(server_id)
+    if server_id in user_states[user_id]['data']['server_ids']:
+        user_states[user_id]['data']['server_ids'].remove(server_id)
     else:
-        plan_data['server_ids'].append(server_id)
+        user_states[user_id]['data']['server_ids'].append(server_id)
     
-    # Update keyboard
-    return await show_server_selection(query, context)
+    show_server_selection(bot, query.message)
 
-async def show_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+def show_confirmation(bot, call):
     """Show confirmation message with plan details."""
-    query = update.callback_query
-    plan_data = get_plan_data(context)
+    user_id = call.from_user.id
+    query = call
+    plan_data = user_states[user_id]['data']
     
-    # Get category name if selected
     category_name = "بدون دسته‌بندی"
     if plan_data.get('category_id'):
-        from database.db import session
         category = session.query(ServerCategory).get(plan_data['category_id'])
         if category:
             flag = category.flag if category.flag else ""
             category_name = f"{flag} {category.title}"
     
-    # Get server names
     servers = session.query(Server).filter(Server.id.in_(plan_data['server_ids'])).all()
-    server_names = [server.title for server in servers]
+    server_names = [server.name for server in servers]
     
-    # Format volume to GB if larger than 1024 MB
     volume_text = f"{plan_data['volume']} مگابایت"
     if plan_data['volume'] >= 1024:
         volume_text = f"{plan_data['volume']/1024:.1f} گیگابایت"
@@ -278,29 +279,31 @@ async def show_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     
     keyboard = [
         [
-            InlineKeyboardButton("✅ تأیید", callback_data="confirm"),
-            InlineKeyboardButton("❌ لغو", callback_data="cancel")
+            InlineKeyboardButton("✅ تأیید", callback_data="confirm_plan"),
+            InlineKeyboardButton("❌ لغو", callback_data="cancel_plan")
         ]
     ]
     
-    await query.message.edit_text(
+    bot.edit_message_text(
         confirmation_text,
+        query.message.chat.id,
+        query.message.message_id,
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
-    return PLAN_CONFIRM
+    user_states[user_id]['state'] = PLAN_CONFIRM
 
-async def handle_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+def handle_confirmation(bot, call):
     """Handle the final confirmation."""
-    query = update.callback_query
-    await query.answer()
+    user_id = call.from_user.id
+    query = call
     
-    if query.data == "cancel":
-        await query.message.edit_text("❌ عملیات لغو شد.")
-        return ConversationHandler.END
+    if query.data == "cancel_plan":
+        bot.edit_message_text("❌ عملیات لغو شد.", query.message.chat.id, query.message.message_id)
+        user_states.pop(user_id, None)
+        return
     
-    # Create new plan
     try:
-        plan_data = get_plan_data(context)
+        plan_data = user_states[user_id]['data']
         plan = ServerPlan(
             title=plan_data['title'],
             volume=plan_data['volume'],
@@ -310,52 +313,26 @@ async def handle_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE
             server_ids=plan_data['server_ids'],
             is_active=True
         )
-        plan.save()
+        session.add(plan)
+        session.commit()
         
-        await query.message.edit_text("✅ پلن با موفقیت اضافه شد!")
+        bot.edit_message_text("✅ پلن با موفقیت اضافه شد!", query.message.chat.id, query.message.message_id)
         
     except Exception as e:
         logger.error(f"Error creating plan: {e}")
-        await query.message.edit_text(
-            "❌ خطا در ثبت پلن. لطفاً دوباره تلاش کنید."
+        bot.edit_message_text(
+            "❌ خطا در ثبت پلن. لطفاً دوباره تلاش کنید.",
+            query.message.chat.id,
+            query.message.message_id
         )
     
-    return ConversationHandler.END
+    user_states.pop(user_id, None)
 
 def get_plan_management_handlers():
-    handlers = [
-        ConversationHandler(
-            entry_points=[
-                MessageHandler(filters.Regex('^افزودن پلن$'), start_add_plan)
-            ],
-            states={
-                PLAN_NAME: [
-                    MessageHandler(filters.TEXT & ~filters.COMMAND, handle_plan_name)
-                ],
-                PLAN_VOLUME: [
-                    MessageHandler(filters.TEXT & ~filters.COMMAND, handle_plan_volume)
-                ],
-                PLAN_DURATION: [
-                    MessageHandler(filters.TEXT & ~filters.COMMAND, handle_plan_duration)
-                ],
-                PLAN_PRICE: [
-                    MessageHandler(filters.TEXT & ~filters.COMMAND, handle_plan_price)
-                ],
-                PLAN_CATEGORY: [
-                    CallbackQueryHandler(handle_category_selection)
-                ],
-                PLAN_SERVERS: [
-                    CallbackQueryHandler(handle_server_selection)
-                ],
-                PLAN_CONFIRM: [
-                    CallbackQueryHandler(handle_confirmation)
-                ]
-            },
-            fallbacks=[
-                MessageHandler(filters.Regex('^لغو$'), lambda u, c: ConversationHandler.END)
-            ],
-            name="plan_management",
-            persistent=True
-        )
+    return [
+        (start_add_plan, {'commands': ['addplan']}),
+        (handle_plan_management_message, {'func': lambda message: message.from_user.id in user_states}),
+        (handle_category_selection, {'func': lambda call: call.data.startswith('select_category_') or call.data == 'no_category' or call.data == 'cancel_plan'}),
+        (handle_server_selection, {'func': lambda call: call.data.startswith('select_server_') or call.data == 'servers_done_plan' or call.data == 'cancel_plan'}),
+        (handle_confirmation, {'func': lambda call: call.data == 'confirm_plan' or call.data == 'cancel_plan'}),
     ]
-    return handlers

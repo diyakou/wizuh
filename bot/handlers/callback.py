@@ -1,5 +1,4 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
+from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.models import User, Config, Plan, Transaction, Server
 from database.db import session
 from bot.keyboards.admin import (
@@ -27,82 +26,89 @@ import uuid
 
 logger = logging.getLogger(__name__)
 
-async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def callback_handler(bot, call):
     """Handle callback queries."""
     try:
-        query = update.callback_query
-        await query.answer()  # Answer the callback query to stop loading animation
+        query = call
         
         # Get user and check if admin
-        user_id = update.effective_user.id
+        user_id = query.from_user.id
         is_admin = user_id in ADMIN_IDS
         
         # Handle admin callbacks
         if query.data.startswith("admin_") and is_admin:
-            await handle_admin_callback(update, context)
+            handle_admin_callback(bot, query)
             return
             
         # Handle user callbacks
-        await handle_user_callback(update, context)
+        handle_user_callback(bot, query)
             
     except Exception as e:
         logger.error(f"Error in callback handler: {e}")
-        await query.edit_message_text(
+        bot.edit_message_text(
             "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_main_menu() if not is_admin else get_admin_main_menu()
         )
 
-async def handle_admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+def handle_admin_callback(bot, query) -> None:
     """Handle admin-specific callbacks."""
-    query = update.callback_query
     callback_data = query.data
     
     # Admin main menu options
     if callback_data == "admin_servers":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "مدیریت سرورها - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_server_management_menu()
         )
     
     elif callback_data == "admin_users":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "مدیریت کاربران - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_user_management_menu()
         )
     
     elif callback_data == "admin_plans":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "مدیریت پلن‌ها - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_plan_management_menu()
         )
     
     elif callback_data == "admin_reports":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "گزارش‌ها - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_reports_menu()
         )
     
     elif callback_data == "admin_settings":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "تنظیمات ربات - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_settings_menu()
         )
     
     # Server management
     elif callback_data == "add_server":
-        context.user_data["state"] = "waiting_server_info"
-        await query.edit_message_text(
-            "لطفاً اطلاعات سرور را در قالب زیر وارد کنید:\n"
-            "IP|PORT|USERNAME|PASSWORD|TYPE\n"
-            "مثال:\n"
-            "1.2.3.4|8080|admin|pass123|xui"
-        )
+        from bot.handlers.admin import add_server
+        add_server(bot, query.message)
     
     elif callback_data == "list_servers":
         servers = Server.get_all()
         if not servers:
-            await query.edit_message_text(
+            bot.edit_message_text(
                 "هیچ سروری یافت نشد.",
+                query.message.chat.id,
+                query.message.message_id,
                 reply_markup=get_server_management_menu()
             )
             return
@@ -112,28 +118,33 @@ async def handle_admin_callback(update: Update, context: ContextTypes.DEFAULT_TY
             status = "فعال" if server.is_active else "غیرفعال"
             message += f"🖥 {server.ip}:{server.port} - {server.type} - {status}\n"
         
-        await query.edit_message_text(
+        bot.edit_message_text(
             message,
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_server_management_menu()
         )
     
     # Add more admin callback handlers...
 
-async def handle_user_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+def handle_user_callback(bot, query) -> None:
     """Handle user-specific callbacks."""
-    query = update.callback_query
     callback_data = query.data
     
     if callback_data == "start":
-        await query.edit_message_text(
+        bot.edit_message_text(
             "منوی اصلی - لطفاً یک گزینه را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_main_menu()
         )
     
     elif callback_data == "buy":
         plans = Plan.get_active_plans()
-        await query.edit_message_text(
+        bot.edit_message_text(
             "لطفاً یک پلن را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_plans_menu(plans)
         )
     
@@ -141,19 +152,23 @@ async def handle_user_callback(update: Update, context: ContextTypes.DEFAULT_TYP
         plan_id = int(callback_data.split("_")[2])
         plan = Plan.get_by_id(plan_id)
         if not plan:
-            await query.edit_message_text(
+            bot.edit_message_text(
                 "پلن مورد نظر یافت نشد.",
+                query.message.chat.id,
+                query.message.message_id,
                 reply_markup=get_main_menu()
             )
             return
         
-        await query.edit_message_text(
+        bot.edit_message_text(
             f"پلن انتخابی:\n"
             f"نام: {plan.name}\n"
             f"حجم: {plan.volume} GB\n"
             f"مدت: {plan.duration} روز\n"
             f"قیمت: {plan.price:,} تومان\n\n"
             "لطفاً روش پرداخت را انتخاب کنید:",
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_payment_methods_menu(plan.price, plan.id)
         )
     
@@ -163,31 +178,39 @@ async def handle_user_callback(update: Update, context: ContextTypes.DEFAULT_TYP
         amount = int(amount)
         
         if method == "wallet":
-            user = User.get_by_telegram_id(update.effective_user.id)
+            user = User.get_by_telegram_id(query.from_user.id)
             if user.balance < amount:
-                await query.edit_message_text(
+                bot.edit_message_text(
                     "موجودی کیف پول شما کافی نیست.",
+                    query.message.chat.id,
+                    query.message.message_id,
                     reply_markup=get_wallet_menu(user.balance)
                 )
                 return
             
             # Process wallet payment
-            success = await process_wallet_payment(user, amount, plan_id)
+            success = process_wallet_payment(user, amount, plan_id)
             if success:
-                await query.edit_message_text(
+                bot.edit_message_text(
                     "پرداخت با موفقیت انجام شد. سرویس شما در حال فعال‌سازی است...",
+                    query.message.chat.id,
+                    query.message.message_id,
                     reply_markup=get_main_menu()
                 )
             else:
-                await query.edit_message_text(
+                bot.edit_message_text(
                     "خطا در پردازش پرداخت. لطفاً مجدداً تلاش کنید.",
+                    query.message.chat.id,
+                    query.message.message_id,
                     reply_markup=get_main_menu()
                 )
         else:
             # Generate payment link for other methods
-            payment_link = create_payment_link(method, amount, plan_id, update.effective_user.id)
-            await query.edit_message_text(
+            payment_link = create_payment_link(method, amount, plan_id, query.from_user.id)
+            bot.edit_message_text(
                 "لطفاً روی لینک زیر کلیک کنید تا به درگاه پرداخت منتقل شوید:",
+                query.message.chat.id,
+                query.message.message_id,
                 reply_markup=InlineKeyboardMarkup([[
                     InlineKeyboardButton("پرداخت", url=payment_link),
                     InlineKeyboardButton("بازگشت", callback_data="buy")
@@ -195,10 +218,12 @@ async def handle_user_callback(update: Update, context: ContextTypes.DEFAULT_TYP
             )
     
     elif callback_data == "configs":
-        configs = Config.get_user_configs(update.effective_user.id)
+        configs = Config.get_user_configs(query.from_user.id)
         if not configs:
-            await query.edit_message_text(
+            bot.edit_message_text(
                 "شما هیچ سرویس فعالی ندارید.",
+                query.message.chat.id,
+                query.message.message_id,
                 reply_markup=get_main_menu()
             )
             return
@@ -212,14 +237,15 @@ async def handle_user_callback(update: Update, context: ContextTypes.DEFAULT_TYP
                 f"وضعیت: {'فعال' if config.is_active else 'غیرفعال'}\n\n"
             )
         
-        await query.edit_message_text(
+        bot.edit_message_text(
             message,
+            query.message.chat.id,
+            query.message.message_id,
             reply_markup=get_main_menu()
         )
     
     # Add more user callback handlers...
 
-async def process_wallet_payment(user: User, amount: int, plan_id: int) -> bool:
+def process_wallet_payment(user: User, amount: int, plan_id: int) -> bool:
     # Implementation of process_wallet_payment method
     pass
-

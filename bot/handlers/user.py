@@ -1,5 +1,4 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
-from telegram.ext import ContextTypes
+from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from database.models import User, Config, Plan, Transaction
 from database.db import session
 from config.settings import CHANNEL_ID, CHANNEL_LOCK_ENABLED
@@ -32,7 +31,7 @@ def get_profile_keyboard():
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-async def check_channel_membership(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
+def check_channel_membership(bot, user_id: int) -> bool:
     """Check if user is member of the required channel."""
     logger.info(f"Checking membership for user {user_id} in channel {CHANNEL_ID}, lock_enabled={CHANNEL_LOCK_ENABLED}")
     if not CHANNEL_LOCK_ENABLED:
@@ -40,27 +39,28 @@ async def check_channel_membership(user_id: int, context: ContextTypes.DEFAULT_T
         return True
     
     try:
-        member = await context.bot.get_chat_member(chat_id=CHANNEL_ID, user_id=user_id)
+        member = bot.get_chat_member(chat_id=CHANNEL_ID, user_id=user_id)
         logger.info(f"Membership status: {member.status}")
         return member.status in ['member', 'administrator', 'creator']
     except Exception as e:
         logger.error(f"Error checking channel membership: {e}", exc_info=True)
         return False
 
-async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def start_handler(bot, message):
     """Handle /start command and main menu."""
-    logger.info(f"Received /start command from user {update.effective_user.id}")
+    logger.info(f"Received /start command from user {message.from_user.id}")
     try:
-        user = update.effective_user
+        user = message.from_user
         logger.info(f"Processing user: {user.id}, username: {user.username}")
 
         # Check channel membership
         logger.info("Checking channel membership...")
-        if not await check_channel_membership(user.id, context):
+        if not check_channel_membership(bot, user.id):
             logger.info("User not in channel, sending membership prompt")
             keyboard = [[InlineKeyboardButton("عضویت در کانال", url=f"https://t.me/{CHANNEL_ID[1:]}")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            await update.message.reply_text(
+            bot.send_message(
+                message.chat.id,
                 "برای استفاده از ربات، لطفاً ابتدا در کانال ما عضو شوید:",
                 reply_markup=reply_markup
             )
@@ -82,7 +82,8 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Send welcome message with main menu keyboard
         logger.info("Sending welcome message...")
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             f"سلام {user.first_name}!\n"
             "به ربات WizWiz خوش آمدید.\n"
             "لطفاً از منوی زیر گزینه مورد نظر خود را انتخاب کنید:",
@@ -91,35 +92,36 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     except Exception as e:
         logger.error(f"Error in start_handler: {e}", exc_info=True)
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_main_menu(bot, message):
     """Handle main menu button clicks."""
     try:
-        text = update.message.text
+        text = message.text
         
         if text == "🛒 خرید اشتراک":
-            await handle_buy_menu(update, context)
+            handle_buy_menu(bot, message)
         elif text == "📱 کانفیگ های من":
-            await handle_configs_menu(update, context)
+            handle_configs_menu(bot, message)
         elif text == "💰 کیف پول":
-            await handle_wallet_menu(update, context)
+            handle_wallet_menu(bot, message)
         elif text == "❓ راهنما":
-            await handle_help_menu(update, context)
+            handle_help_menu(bot, message)
         elif text == "👤 پروفایل":
-            await handle_profile_menu(update, context)
+            handle_profile_menu(bot, message)
             
     except Exception as e:
         logger.error(f"Error in main menu handler: {e}")
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_buy_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_buy_menu(bot, message):
     """Handle buy subscription menu."""
     try:
         # Get available plans
         plans = session.query(Plan).filter_by(is_active=True).all()
         if not plans:
-            await update.message.reply_text(
+            bot.send_message(
+                message.chat.id,
                 "در حال حاضر هیچ طرحی موجود نیست.",
                 reply_markup=get_main_keyboard()
             )
@@ -132,24 +134,26 @@ async def handle_buy_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
             keyboard.append([InlineKeyboardButton(button_text, callback_data=f"plan_{plan.id}")])
         
         reply_markup = InlineKeyboardMarkup(keyboard)
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "لطفاً طرح مورد نظر خود را انتخاب کنید:",
             reply_markup=reply_markup
         )
         
     except Exception as e:
         logger.error(f"Error in buy menu handler: {e}")
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_configs_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_configs_menu(bot, message):
     """Handle configs menu."""
     try:
-        user = update.effective_user
+        user = message.from_user
         db_user = session.query(User).filter_by(telegram_id=user.id).first()
         
         configs = session.query(Config).filter_by(user_id=db_user.id).all()
         if not configs:
-            await update.message.reply_text(
+            bot.send_message(
+                message.chat.id,
                 "شما هیچ پیکربندی فعالی ندارید.",
                 reply_markup=get_main_keyboard()
             )
@@ -162,7 +166,8 @@ async def handle_configs_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
             keyboard.append([InlineKeyboardButton(button_text, callback_data=f"config_{config.id}")])
         
         reply_markup = InlineKeyboardMarkup(keyboard)
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             "پیکربندی‌های شما:\n"
             "برای مشاهده جزئیات هر پیکربندی، روی آن کلیک کنید:",
             reply_markup=reply_markup
@@ -170,15 +175,16 @@ async def handle_configs_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
         
     except Exception as e:
         logger.error(f"Error in configs menu handler: {e}")
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_wallet_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_wallet_menu(bot, message):
     """Handle wallet menu."""
     try:
-        user = update.effective_user
+        user = message.from_user
         db_user = session.query(User).filter_by(telegram_id=user.id).first()
         
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             f"💰 موجودی کیف پول شما: {db_user.balance:,} تومان\n\n"
             "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
             reply_markup=get_wallet_keyboard()
@@ -186,9 +192,9 @@ async def handle_wallet_menu(update: Update, context: ContextTypes.DEFAULT_TYPE)
         
     except Exception as e:
         logger.error(f"Error in wallet menu handler: {e}")
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_help_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_help_menu(bot, message):
     """Handle help menu."""
     help_text = (
         "🤖 راهنمای استفاده از ربات:\n\n"
@@ -204,15 +210,16 @@ async def handle_help_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• برای دریافت پشتیبانی، با @WizWizSupport در ارتباط باشید"
     )
     
-    await update.message.reply_text(
+    bot.send_message(
+        message.chat.id,
         help_text,
         reply_markup=get_main_keyboard()
     )
 
-async def handle_profile_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_profile_menu(bot, message):
     """Handle profile menu."""
     try:
-        user = update.effective_user
+        user = message.from_user
         db_user = session.query(User).filter_by(telegram_id=user.id).first()
         
         profile_text = (
@@ -223,18 +230,20 @@ async def handle_profile_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
             f"نام کاربری: {db_user.username or '---'}"
         )
         
-        await update.message.reply_text(
+        bot.send_message(
+            message.chat.id,
             profile_text,
             reply_markup=get_profile_keyboard()
         )
         
     except Exception as e:
         logger.error(f"Error in profile menu handler: {e}")
-        await update.message.reply_text("متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
+        bot.send_message(message.chat.id, "متأسفانه خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
-async def handle_back_to_main(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_back_to_main(bot, message):
     """Handle back to main menu button."""
-    await update.message.reply_text(
+    bot.send_message(
+        message.chat.id,
         "به منوی اصلی بازگشتید.",
         reply_markup=get_main_keyboard()
-    ) 
+    )

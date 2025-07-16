@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 from typing import List
 from database.models import Plan, Config
 
@@ -87,4 +87,4 @@ def get_support_menu() -> InlineKeyboardMarkup:
         ],
         [InlineKeyboardButton("بازگشت", callback_data="start")]
     ]
-    return InlineKeyboardMarkup(keyboard) 
+    return InlineKeyboardMarkup(keyboard)
